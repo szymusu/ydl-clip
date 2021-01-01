@@ -1,0 +1,22 @@
+{
+    "name": "szymusu/ydl-clip",
+    "description": "PHP composer package for downloading parts of videos from youtube",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "szymusu",
+            "email": "szymusu@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {"szymusu\\YdlClip\\": "src/"}
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=9.5.0"
+    }
+}
