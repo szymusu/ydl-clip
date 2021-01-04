@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020 Szymon Miłkowski
+ * Copyright (c) 2021 Szymon Miłkowski
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,32 +24,27 @@
 namespace szymusu\YdlClip;
 
 
-use szymusu\YdlClip\exception\VideoUnavailable;
-use szymusu\YdlClip\exception\YoutubeDLException;
+use szymusu\YdlClip\exception\VideoIDException;
 
-class YoutubeDL
+class VideoID
 {
-    private VideoID $videoId;
-
-    public function __construct(VideoID $videoId)
-    {
-        $this->videoId = $videoId;
-    }
+    private string $id;
 
     /**
-     * @return object
-     * @throws YoutubeDLException
+     * @param string $id
+     * @throws VideoIDException
      */
-    public function execute() : object
+    public function __construct(string $id)
     {
-        $output = null; $exitCode = null;
-        exec('youtube-dl -f best --youtube-skip-dash-manifest -j -- '.$this->videoId->get(), $output, $exitCode);
-
-        switch ($exitCode)
+        if (preg_match_all("/^[a-zA-Z0-9-_]{11}$/", $id) !== 1)
         {
-            case 0: return json_decode($output[0]);
-            case 1: throw new VideoUnavailable('Video has been deleted, unlisted or never existed');
-            default: throw new YoutubeDLException('Error while trying to get video info');
+            throw new VideoIDException('Invalid video ID');
         }
+        $this->id = $id;
+    }
+
+    public function get() : string
+    {
+        return $this->id;
     }
 }

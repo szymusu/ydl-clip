@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2020 Szymon Miłkowski
+ * Copyright (c) 2021 Szymon Miłkowski
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,32 +24,27 @@
 namespace szymusu\YdlClip;
 
 
-use szymusu\YdlClip\exception\VideoUnavailable;
-use szymusu\YdlClip\exception\YoutubeDLException;
-
-class YoutubeDL
+class Video
 {
-    private VideoID $videoId;
-
-    public function __construct(VideoID $videoId)
-    {
-        $this->videoId = $videoId;
-    }
+    private object $videoInfo;
 
     /**
-     * @return object
-     * @throws YoutubeDLException
+     * @param string $videoId
+     * @throws exception\VideoIDException
+     * @throws exception\YoutubeDLException
      */
-    public function execute() : object
+    public function __construct(string $videoId)
     {
-        $output = null; $exitCode = null;
-        exec('youtube-dl -f best --youtube-skip-dash-manifest -j -- '.$this->videoId->get(), $output, $exitCode);
-
-        switch ($exitCode)
-        {
-            case 0: return json_decode($output[0]);
-            case 1: throw new VideoUnavailable('Video has been deleted, unlisted or never existed');
-            default: throw new YoutubeDLException('Error while trying to get video info');
-        }
+        $this->videoInfo = (new YoutubeDL(new VideoID($videoId)))->execute();
     }
+
+    public function getVideoId() : string { return $this->videoInfo->id; }
+    public function getStreamUrl() : string { return $this->videoInfo->url; }
+    public function getUploader() : string { return $this->videoInfo->uploader; }
+    public function getTitle() : string { return $this->videoInfo->title; }
+    public function getDescription() : string { return $this->videoInfo->description; }
+    public function getDuration() : int { return $this->videoInfo->duration; }
+    public function getViewCount() : int { return $this->videoInfo->view_count; }
+    public function getLikeCount() : int { return $this->videoInfo->like_count; }
+    public function getDislikeCount() : int { return $this->videoInfo->dislike_count; }
 }

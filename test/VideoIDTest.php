@@ -21,9 +21,54 @@
  * THE SOFTWARE.
  */
 
+use szymusu\YdlClip\exception\VideoIDException;
+use szymusu\YdlClip\VideoID;
 use PHPUnit\Framework\TestCase;
 
-class YoutubeDLTest// extends TestCase
+class VideoIDTest extends TestCase
 {
+    /**
+     * @test
+     * @dataProvider badVideoIds
+     */
+    public function constructor_throwsInvalidArgument_onBadVideoId($videoId)
+    {
+        $this->expectException(VideoIDException::class);
+        new VideoID($videoId);
+    }
+    public function badVideoIds() : array
+    {
+        return [
+            ["aaa"],
+            ["dQw4w9WgXcQq"],
+            ["dQw4w9WgXc"],
+            ["_-_-_-_-_-"],
+            ["0; shutdown now"],
+            ["dQw4w9W%XcQ"],
+            ["d+w4w9WgXcQ"],
+            ["dQw4 9WgXcQ"],
+            ["dQw4w/WgXcQ"],
+        ];
+    }
 
+    /**
+     * @test
+     * @dataProvider goodVideoIds
+     * @throws VideoIDException
+     */
+    public function constructor_acceptsValidVideoId($videoId)
+    {
+        new VideoID($videoId);
+        $this->expectNotToPerformAssertions();
+    }
+    public function goodVideoIds() : array
+    {
+        return [
+            ["dQw4w9WgXcQ"],
+            ["goodVideoId"],
+            ["gocwRvLhDf8"],
+            ["rsUTtpb3k-w"],
+            ["-----------"],
+        ];
+    }
 }
