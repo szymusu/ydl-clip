@@ -47,4 +47,14 @@ class Video
     public function getViewCount() : int { return $this->videoInfo->view_count; }
     public function getLikeCount() : int { return $this->videoInfo->like_count; }
     public function getDislikeCount() : int { return $this->videoInfo->dislike_count; }
+
+    /**
+     * @param $clipTime
+     * @param $fileName
+     * @throws exception\FFmpegException
+     */
+    public function downloadClip($clipTime, $fileName)
+    {
+        (new FFmpeg($clipTime, $this->getStreamUrl(), $fileName))->execute();
+    }
 }

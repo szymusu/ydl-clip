@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+use szymusu\YdlClip\ClipTime;
+use szymusu\YdlClip\exception\FFmpegException;
 use szymusu\YdlClip\exception\VideoIDException;
 use szymusu\YdlClip\exception\YoutubeDLException;
 use szymusu\YdlClip\Video;
@@ -30,14 +32,52 @@ class VideoTest extends TestCase
 {
     /**
      * @test
+     * @dataProvider idsAndTitles
+     * @param string $vid
+     * @param string $title
      * @throws VideoIDException
      * @throws YoutubeDLException
      */
-    public function rickRoll()
+    public function constructingVideo_fetchesVideoData(string $vid, string $title)
     {
-        $vid = 'dQw4w9WgXcQ';
         $video = new Video($vid);
         self::assertEquals($vid, $video->getVideoId());
-        self::assertEquals('Rick Astley - Never Gonna Give You Up (Video)', $video->getTitle());
+        self::assertEquals($title, $video->getTitle());
+    }
+
+    public function idsAndTitles(): array
+    {
+        return [
+            ['dQw4w9WgXcQ', 'Rick Astley - Never Gonna Give You Up (Video)']
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider clipsToDownload
+     * @param string $vid
+     * @param ClipTime $clipTime
+     * @param string $fileName
+     * @throws FFmpegException
+     * @throws VideoIDException
+     * @throws YoutubeDLException
+     */
+    public function downloadClip_createsCorrectFile(string $vid, ClipTime $clipTime, string $fileName)
+    {
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
+
+        (new Video($vid))->downloadClip($clipTime, $fileName);
+
+        $this->assertTrue(file_exists($fileName));
+    }
+
+    public function clipsToDownload(): array
+    {
+        return [
+            ['a5WeOJHFz0o', new ClipTime(47.77, 56.244708), '../storage/cyberpunk.mkv'],
+            ['nX1VQwg6jxU', new ClipTime(309.34, 309.982191), '../storage/zlikwidowac.mkv']
+        ];
     }
 }
