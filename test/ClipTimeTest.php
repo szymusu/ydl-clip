@@ -32,7 +32,7 @@ class ClipTimeTest extends TestCase
      */
     public function constructor_ThrowsOutOfBounds_onInvalidTimestamps($start, $end)
     {
-        $this->expectException(\OutOfBoundsException::class);
+        $this->expectException(OutOfBoundsException::class);
         new ClipTime($start, $end);
     }
     public function invalidTimestamps(): array
@@ -45,9 +45,6 @@ class ClipTimeTest extends TestCase
             [-1, -1],
             [0, -1],
             [0, -1],
-            [0, ClipTime::MAX_DURATION + 0.0001],
-            [1212, ClipTime::MAX_DURATION + 1212.1],
-            [1212, 1212 + ClipTime::MAX_DURATION * 2],
         ];
     }
 
@@ -57,7 +54,7 @@ class ClipTimeTest extends TestCase
      */
     public function constructor_ThrowsTypeError_whenArgumentIsNotNumber($start, $end)
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
         new ClipTime($start, $end);
     }
     public function invalidTypes(): array

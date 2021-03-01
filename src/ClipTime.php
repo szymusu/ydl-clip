@@ -24,10 +24,10 @@
 namespace szymusu\YdlClip;
 
 
+use OutOfBoundsException;
+
 class ClipTime
 {
-    public const MAX_DURATION = 60;
-
     private float $start;
     private float $end;
 
@@ -38,11 +38,11 @@ class ClipTime
 
         if ($start < 0 || $end < 0)
         {
-            throw new \OutOfBoundsException('Timestamps cannot be negative');
+            throw new OutOfBoundsException('Timestamps cannot be negative');
         }
-        if ($this->getDuration() > self::MAX_DURATION || $this->getDuration() <= 0)
+        if ($this->getDuration() <= 0)
         {
-            throw new \OutOfBoundsException('Duration must be between 0 and '.self::MAX_DURATION);
+            throw new OutOfBoundsException('Duration must be a positive number');
         }
     }
 

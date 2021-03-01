@@ -45,7 +45,7 @@ class FFmpeg
     public function execute()
     {
         $output = null; $exitCode = null;
-        exec(sprintf('ffmpeg -y -i "%s" -ss %F -to %F %s',
+        exec(sprintf('ffmpeg -y -i "%s" -ss %F -to %F "%s"',
             $this->streamUrl,
             $this->clipTime->getStart(),
             $this->clipTime->getEnd(),
@@ -53,6 +53,6 @@ class FFmpeg
         ), $output, $exitCode
         );
 
-        if ($exitCode !== 0) throw new FFmpegException('Error downloading clip');
+        if ($exitCode !== 0) throw new FFmpegException("Error $exitCode while downloading clip");
     }
 }

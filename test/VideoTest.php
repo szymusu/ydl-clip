@@ -77,7 +77,8 @@ class VideoTest extends TestCase
     {
         return [
             ['a5WeOJHFz0o', new ClipTime(47.77, 56.244708), '../storage/cyberpunk.mkv'],
-            ['nX1VQwg6jxU', new ClipTime(309.34, 309.982191), '../storage/zlikwidowac.mkv']
+            ['nX1VQwg6jxU', new ClipTime(309.34, 309.982191), '../storage/zlikwidowac.mkv'],
+            ['RTXS4MMngnA', new ClipTime(2193.239959, 2195.116521), '../storage/puff_ding_aaa.mkv'],
         ];
     }
 }
