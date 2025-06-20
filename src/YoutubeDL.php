@@ -37,13 +37,12 @@ class YoutubeDL
     }
 
     /**
-     * @return object
      * @throws YoutubeDLException
      */
     public function execute() : object
     {
         $output = null; $exitCode = null;
-        exec('youtube-dl -f best --youtube-skip-dash-manifest -j -- '.$this->videoId->get(),
+        exec('yt-dlp -f b --youtube-skip-dash-manifest -j -- '.$this->videoId->get(),
             $output, $exitCode);
 
         switch ($exitCode)

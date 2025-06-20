@@ -21,21 +21,21 @@
  * THE SOFTWARE.
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use szymusu\YdlClip\ClipTime;
 
 class ClipTimeTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider invalidTimestamps
-     */
+    #[Test]
+    #[DataProvider("invalidTimestamps")]
     public function constructor_ThrowsOutOfBounds_onInvalidTimestamps($start, $end)
     {
         $this->expectException(OutOfBoundsException::class);
         new ClipTime($start, $end);
     }
-    public function invalidTimestamps(): array
+    public static function invalidTimestamps(): array
     {
         return [
             [0, 0],
@@ -48,16 +48,15 @@ class ClipTimeTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidTypes
-     */
+    #[Test]
+    #[DataProvider("invalidTypes")]
     public function constructor_ThrowsTypeError_whenArgumentIsNotNumber($start, $end)
     {
         $this->expectException(TypeError::class);
         new ClipTime($start, $end);
     }
-    public function invalidTypes(): array
+
+    public static function invalidTypes(): array
     {
         return [
             [null, 99],
@@ -65,6 +64,26 @@ class ClipTimeTest extends TestCase
             [0, null],
             [0, "siajajaja"],
             [0, new ClipTime(0, 1)],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider("validTimestamps")]
+    public function constructor_Succeeds_onValidTimestamps($start, $end)
+    {
+        $clipTime = new ClipTime($start, $end);
+        $this->assertEquals($start, $clipTime->getStart());
+        $this->assertEquals($end, $clipTime->getEnd());
+        $this->assertEquals($end - $start, $clipTime->getDuration());
+    }
+
+    public static function validTimestamps(): array
+    {
+        return [
+            [0, 1],
+            [1, 2],
+            [10, 999],
+            [0.1, 0.1001],
         ];
     }
 }

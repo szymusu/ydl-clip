@@ -29,13 +29,12 @@ class Video
     private object $videoInfo;
 
     /**
-     * @param string $videoId
      * @throws exception\VideoIDException
      * @throws exception\YoutubeDLException
      */
     public function __construct(string $videoId)
     {
-        $this->videoInfo = (new YoutubeDL(new VideoID($videoId)))->execute();
+        $this->videoInfo = new YoutubeDL(new VideoID($videoId))->execute();
     }
 
     public function getVideoId() : string { return $this->videoInfo->id; }
@@ -49,12 +48,10 @@ class Video
     public function getDislikeCount() : int { return $this->videoInfo->dislike_count; }
 
     /**
-     * @param $clipTime
-     * @param $fileName
      * @throws exception\FFmpegException
      */
-    public function downloadClip($clipTime, $fileName)
+    public function downloadClip($clipTime, $fileName): void
     {
-        (new FFmpeg($clipTime, $this->getStreamUrl(), $fileName))->execute();
+        new FFmpeg($clipTime, $this->getStreamUrl(), $fileName)->execute();
     }
 }

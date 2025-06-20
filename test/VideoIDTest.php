@@ -21,22 +21,23 @@
  * THE SOFTWARE.
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use szymusu\YdlClip\exception\VideoIDException;
 use szymusu\YdlClip\VideoID;
 use PHPUnit\Framework\TestCase;
 
 class VideoIDTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider badVideoIds
-     */
-    public function constructor_throwsInvalidArgument_onBadVideoId($videoId)
+    #[Test]
+    #[DataProvider("badVideoIds")]
+    public function constructor_throwsVideoIDException_onBadVideoId($videoId)
     {
         $this->expectException(VideoIDException::class);
         new VideoID($videoId);
     }
-    public function badVideoIds() : array
+
+    public static function badVideoIds() : array
     {
         return [
             ["aaa"],
@@ -52,16 +53,16 @@ class VideoIDTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider goodVideoIds
      * @throws VideoIDException
      */
+    #[Test]
+    #[DataProvider("goodVideoIds")]
     public function constructor_acceptsValidVideoId($videoId)
     {
         new VideoID($videoId);
         $this->expectNotToPerformAssertions();
     }
-    public function goodVideoIds() : array
+    public static function goodVideoIds() : array
     {
         return [
             ["dQw4w9WgXcQ"],

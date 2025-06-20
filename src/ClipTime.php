@@ -46,7 +46,7 @@ class ClipTime
         }
     }
 
-    private function getDuration() : float
+    public function getDuration() : float
     {
         return $this->end - $this->start;
     }

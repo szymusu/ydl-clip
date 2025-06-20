@@ -21,6 +21,9 @@
  * THE SOFTWARE.
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use szymusu\YdlClip\ClipTime;
 use szymusu\YdlClip\exception\FFmpegException;
 use szymusu\YdlClip\exception\VideoIDException;
@@ -31,13 +34,11 @@ use PHPUnit\Framework\TestCase;
 class VideoTest extends TestCase
 {
     /**
-     * @test
-     * @dataProvider idsAndTitles
-     * @param string $vid
-     * @param string $title
      * @throws VideoIDException
      * @throws YoutubeDLException
      */
+    #[Test]
+    #[DataProvider('idsAndTitles')]
     public function constructingVideo_fetchesVideoData(string $vid, string $title)
     {
         $video = new Video($vid);
@@ -45,35 +46,33 @@ class VideoTest extends TestCase
         self::assertEquals($title, $video->getTitle());
     }
 
-    public function idsAndTitles(): array
+    public static function idsAndTitles(): array
     {
         return [
-            ['dQw4w9WgXcQ', 'Rick Astley - Never Gonna Give You Up (Video)']
+            ['dQw4w9WgXcQ', 'Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)']
         ];
     }
 
     /**
-     * @test
-     * @dataProvider clipsToDownload
-     * @param string $vid
-     * @param ClipTime $clipTime
-     * @param string $fileName
      * @throws FFmpegException
      * @throws VideoIDException
      * @throws YoutubeDLException
      */
+    #[Test]
+    #[DataProvider('clipsToDownload')]
+    #[Group("download")]
     public function downloadClip_createsCorrectFile(string $vid, ClipTime $clipTime, string $fileName)
     {
         if (file_exists($fileName)) {
             unlink($fileName);
         }
 
-        (new Video($vid))->downloadClip($clipTime, $fileName);
+        new Video($vid)->downloadClip($clipTime, $fileName);
 
         $this->assertTrue(file_exists($fileName));
     }
 
-    public function clipsToDownload(): array
+    public static function clipsToDownload(): array
     {
         return [
             ['a5WeOJHFz0o', new ClipTime(47.77, 56.244708), '../storage/cyberpunk.mkv'],
