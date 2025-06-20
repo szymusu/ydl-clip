@@ -1,0 +1,13 @@
+{
+  "output": "build/ydl-clip.phar",
+  "main": "main.php",
+  "directories": [
+    "src",
+    "vendor"
+  ],
+  "files": [
+    "composer.json",
+    "composer.lock"
+  ],
+  "compression": "GZ"
+}
