@@ -4,7 +4,8 @@
     "type": "library",
     "license": "MIT",
     "scripts": {
-        "test": "php vendor/phpunit/phpunit/phpunit test --exclude-group download"
+        "test": "php vendor/phpunit/phpunit/phpunit test --exclude-group download",
+        "build": "/home/_m/.config/composer/vendor/bin/box compile"
     },
     "authors": [
         {
