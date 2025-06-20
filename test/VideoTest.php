@@ -49,7 +49,9 @@ class VideoTest extends TestCase
     public static function idsAndTitles(): array
     {
         return [
-            ['dQw4w9WgXcQ', 'Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)']
+            ['dQw4w9WgXcQ', 'Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)'],
+            ['QyJZzq0v7Z4', 'Why Isn\'t Functional Programming the Norm? – Richard Feldman'],
+            ['kzOsK7GwcYc', 'How To Die in 0.5 Seconds, Now in 60 FPS! | Minecraft Crystal PvP Montage'],
         ];
     }
 
