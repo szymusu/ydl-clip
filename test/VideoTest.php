@@ -39,6 +39,7 @@ class VideoTest extends TestCase
      */
     #[Test]
     #[DataProvider('idsAndTitles')]
+    #[Group("network")]
     public function constructingVideo_fetchesVideoData(string $vid, string $title)
     {
         $video = new Video($vid);
@@ -62,24 +63,30 @@ class VideoTest extends TestCase
      */
     #[Test]
     #[DataProvider('clipsToDownload')]
-    #[Group("download")]
+    #[Group("network")]
     public function downloadClip_createsCorrectFile(string $vid, ClipTime $clipTime, string $fileName)
     {
         if (file_exists($fileName)) {
             unlink($fileName);
         }
 
-        (new Video($vid))->downloadClip($clipTime, $fileName);
+        $video = new Video($vid);
+        $video->downloadClip($clipTime, $fileName);
 
-        $this->assertTrue(file_exists($fileName));
+        $this->assertFileExists($fileName);
+
+        $getID3 = new getID3();
+        $file = $getID3->analyze($fileName);
+
+        $this->assertEquals(round($clipTime->getDuration()), round($file["playtime_seconds"]));
     }
 
     public static function clipsToDownload(): array
     {
         return [
-            ['a5WeOJHFz0o', new ClipTime(47.77, 56.244708), '../storage/cyberpunk.mkv'],
-            ['nX1VQwg6jxU', new ClipTime(309.34, 309.982191), '../storage/zlikwidowac.mkv'],
-            ['RTXS4MMngnA', new ClipTime(2193.239959, 2195.116521), '../storage/puff_ding_aaa.mkv'],
+            ['a5WeOJHFz0o', new ClipTime(47.77, 56.244708), '/tmp/cyberpunk.mkv'],
+            ['nX1VQwg6jxU', new ClipTime(309.34, 309.982191), '/tmp/zlikwidowac.mkv'],
+            ['RTXS4MMngnA', new ClipTime(2193.239959, 2195.116521), '/tmp/puff_ding_aaa.mkv'],
         ];
     }
 }

@@ -42,10 +42,10 @@ class FFmpeg
     /**
      * @throws FFmpegException
      */
-    public function execute()
+    public function execute(): void
     {
         $output = null; $exitCode = null;
-        exec(sprintf('ffmpeg -y -i "%s" -ss %F -to %F "%s"',
+        exec(sprintf('ffmpeg -hide_banner -loglevel error -y -i "%s" -ss %F -to %F "%s"',
             $this->streamUrl,
             $this->clipTime->getStart(),
             $this->clipTime->getEnd(),

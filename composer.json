@@ -4,7 +4,8 @@
     "type": "library",
     "license": "MIT",
     "scripts": {
-        "test": "php vendor/phpunit/phpunit/phpunit test --exclude-group download",
+        "test": "php vendor/phpunit/phpunit/phpunit --testdox test",
+        "test-no-network": "php vendor/phpunit/phpunit/phpunit --testdox test --exclude-group network",
         "build": "/home/_m/.config/composer/vendor/bin/box compile"
     },
     "authors": [
@@ -19,7 +20,8 @@
     },
     "require": {
         "php": ">=8.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "james-heinrich/getid3": "^1.9"
     },
     "require-dev": {
         "phpunit/phpunit": ">=9.5.0"
