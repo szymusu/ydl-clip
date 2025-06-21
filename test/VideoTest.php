@@ -69,7 +69,7 @@ class VideoTest extends TestCase
             unlink($fileName);
         }
 
-        new Video($vid)->downloadClip($clipTime, $fileName);
+        (new Video($vid))->downloadClip($clipTime, $fileName);
 
         $this->assertTrue(file_exists($fileName));
     }

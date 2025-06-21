@@ -34,7 +34,7 @@ class Video
      */
     public function __construct(string $videoId)
     {
-        $this->videoInfo = new YoutubeDL(new VideoID($videoId))->execute();
+        $this->videoInfo = (new YoutubeDL(new VideoID($videoId)))->execute();
     }
 
     public function getVideoId() : string { return $this->videoInfo->id; }
@@ -52,6 +52,6 @@ class Video
      */
     public function downloadClip($clipTime, $fileName): void
     {
-        new FFmpeg($clipTime, $this->getStreamUrl(), $fileName)->execute();
+        (new FFmpeg($clipTime, $this->getStreamUrl(), $fileName))->execute();
     }
 }
