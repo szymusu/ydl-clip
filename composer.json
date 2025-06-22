@@ -6,7 +6,7 @@
     "scripts": {
         "test": "php vendor/phpunit/phpunit/phpunit --testdox test",
         "test-no-network": "php vendor/phpunit/phpunit/phpunit --testdox test --exclude-group network",
-        "build": "/home/_m/.config/composer/vendor/bin/box compile"
+        "build": "$(composer global config bin-dir --absolute)/box compile"
     },
     "authors": [
         {
