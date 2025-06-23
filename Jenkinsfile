@@ -13,7 +13,7 @@ pipeline {
                 sh 'if [ ! -d MDO2025_INO ]; then git clone -b SM418114 --single-branch https://github.com/InzynieriaOprogramowaniaAGH/MDO2025_INO; fi'
             }
         }
-
+        
         stage('Pull') {
             steps {
                 sh 'cd MDO2025_INO && git pull'
@@ -50,10 +50,13 @@ pipeline {
 
         stage('Publish') {
             steps {
-                sh 'docker run --name publish-phar -v phar:/phar ydl-clip'
-                sh 'docker cp publish-phar:/phar/ydl-clip.phar ./'
-                sh 'docker rm publish-phar'
-                archiveArtifacts artifacts: "ydl-clip.phar", allowEmptyArchive: false
+                script {
+                    def version = params.VERSION
+                    sh 'docker run --name publish -v phar:/phar ydl-clip'
+                    sh 'docker cp publish:/phar/ydl-clip.phar ./'
+                    sh 'docker rm publish'
+                    archiveArtifacts artifacts: "ydl-clip-${version}.phar", allowEmptyArchive: false
+                }
             }
         }
     }
