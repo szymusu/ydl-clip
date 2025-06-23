@@ -53,7 +53,7 @@ pipeline {
                 script {
                     def version = params.VERSION
                     sh 'docker run --name publish-phar -v phar:/phar ydl-clip'
-                    sh 'docker cp publish-phar:/phar/ydl-clip.phar ./'
+                    sh "docker cp publish-phar:/phar/ydl-clip.phar ./ydl-clip-${version}.phar"
                     sh 'docker rm publish-phar'
                     archiveArtifacts artifacts: "ydl-clip-${version}.phar", allowEmptyArchive: false
                 }
